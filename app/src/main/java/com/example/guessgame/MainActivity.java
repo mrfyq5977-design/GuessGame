@@ -3,56 +3,55 @@ package com.example.guessgame;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import java.util.Random;
 
 public class MainActivity extends Activity {
 
-    private int secretNumber;
-    private EditText guessInput;
-    private TextView message;
+    private int treasureChest;
+    private TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        message = findViewById(R.id.message);
-        guessInput = findViewById(R.id.guessInput);
-        Button guessButton = findViewById(R.id.guessButton);
+        resultText = findViewById(R.id.resultText);
+
+        Button chest1 = findViewById(R.id.chest1);
+        Button chest2 = findViewById(R.id.chest2);
+        Button chest3 = findViewById(R.id.chest3);
+        Button restartButton = findViewById(R.id.restartButton);
 
         startGame();
 
-        guessButton.setOnClickListener(v -> checkGuess());
+        chest1.setOnClickListener(v -> checkChest(1));
+        chest2.setOnClickListener(v -> checkChest(2));
+        chest3.setOnClickListener(v -> checkChest(3));
+
+        restartButton.setOnClickListener(v -> startGame());
     }
 
     private void startGame() {
-        secretNumber = new Random().nextInt(10) + 1;
-        message.setText("أنا اخترت رقمًا من 1 إلى 10");
+        treasureChest = new Random().nextInt(3) + 1;
+
+        resultText.setText("🏆 اختر صندوقًا وابحث عن الكنز!");
+
+        enableChests(true);
     }
 
-    private void checkGuess() {
-        String text = guessInput.getText().toString();
+    private void checkChest(int selectedChest) {
 
-        if (text.isEmpty()) {
-            message.setText("اكتب رقمًا أولًا!");
-            return;
-        }
-
-        int guess = Integer.parseInt(text);
-
-        if (guess < 1 || guess > 10) {
-            message.setText("اكتب رقمًا من 1 إلى 10");
-        } else if (guess < secretNumber) {
-            message.setText("الرقم أكبر ⬆️");
-        } else if (guess > secretNumber) {
-            message.setText("الرقم أصغر ⬇️");
+        if (selectedChest == treasureChest) {
+            resultText.setText("🎉 مبروك! وجدت الكنز! 🏆");
         } else {
-            message.setText("🎉 أحسنت! خمنت الرقم الصحيح!");
-            startGame();
+            resultText.setText("😢 لا يوجد كنز هنا! حاول مرة أخرى.");
         }
+    }
 
-        guessInput.setText("");
+    private void enableChests(boolean enabled) {
+        findViewById(R.id.chest1).setEnabled(enabled);
+        findViewById(R.id.chest2).setEnabled(enabled);
+        findViewById(R.id.chest3).setEnabled(enabled);
     }
 }
