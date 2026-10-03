@@ -1,4 +1,4 @@
-name: بناء تطبيق GuessGame
+ame: بناء تطبيق GuessGame
 
 on:
   workflow_dispatch:
@@ -21,7 +21,9 @@ jobs:
           java-version: '21'
 
       - name: إعداد Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
+        with:
+          packages: ''
 
       - name: تثبيت Android SDK
         run: |
