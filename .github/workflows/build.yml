@@ -3,7 +3,7 @@ name: بناء تطبيق GuessGame
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
@@ -13,11 +13,20 @@ jobs:
       - name: تحميل المشروع
         uses: actions/checkout@v4
 
-      - name: إعداد Java
+      - name: إعداد Java 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
+
+      - name: إعداد Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: تثبيت أدوات Android
+        run: |
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
 
       - name: إعداد Gradle
         uses: gradle/actions/setup-gradle@v4
