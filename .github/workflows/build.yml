@@ -3,7 +3,8 @@ name: بناء تطبيق GuessGame
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
       - name: إعداد Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: تثبيت أدوات Android
+      - name: تثبيت Android SDK
         run: |
           sdkmanager "platform-tools"
           sdkmanager "platforms;android-35"
@@ -30,6 +31,8 @@ jobs:
 
       - name: إعداد Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
 
       - name: بناء APK
         run: gradle assembleDebug --no-daemon
